@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductGalleryRequest;
 use App\Models\Product;
 use App\Models\ProductGallery;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class ProductGalleryController extends Controller
             ->addColumn('action', function($item)
             {
                 return '
-                <form class="inline-block" action="'. route('dashboard.product.destroy', $item->id) .'">
+                <form class="inline-block" action="'. route('dashboard.gallery.destroy', $item->id) .'">
                     <button class="bg-red-500 text-white rounded-md px-2 py-1 m-2">
                         Hapus
                     </button>
@@ -38,7 +39,7 @@ class ProductGalleryController extends Controller
             ->editColumn('is_featured', function($item){
                 return $item->is_featured ? 'Yes' : 'No';
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['action','url'])
             ->make();
         }
 
@@ -48,17 +49,32 @@ class ProductGalleryController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Product $product)
     {
-        //
+        return view('pages.dashboard.gallery.create', compact('product'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductGalleryRequest $request, Product $product )
     {
-        //
+        $files = $request->file('files');
+        
+        if($request->hasFile('files'))
+        {
+            foreach ($files as $file)
+            {
+                $path = $file->store('public/gallery');
+
+                ProductGallery::create([
+                    'products_id' => $product->id,
+                    'url' => $path
+                ]);
+            }
+        }
+
+        return redirect()->route('dashboard.product.gallery.index', $product->id);
     }
 
     /**

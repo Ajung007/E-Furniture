@@ -1,18 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Product &raquo; Create
+            Prodcut &raquo; {{ $product->name }} &raquo; upload foto
         </h2>
     </x-slot>
     
-    <x-slot name="script">
-    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
-    <script> 
-        CKEDITOR.replace('description'); 
-    </script>
-
-    </x-slot>
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
            <div>
@@ -33,26 +25,18 @@
             </div>
             @endif
 
-            <form action="{{ route('dashboard.product.store') }}" class="w-full" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('dashboard.product.gallery.store', $product->id) }}" class="w-full" method="POST" enctype="multipart/form-data">
                 @csrf 
                 <div class="flex flex-wrap -max-3 mb-6">
                     <div class="w-full px-3 mb-6">
-                        <label for="" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Name :</label>
-                        <input type="text" value="{{ old('name') }}" name="name" placeholder="Product Name" class="block w-full bg-gray-700 border boder-gray-200 rounded py-3 px-4 leading-light focus:outline-none focus:bg-white focus:border-gray-500">
-                    </div>
-                    <div class="w-full px-3 mb-6">
-                        <label for="" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Description :</label>
-                        <textarea name="description" class="block w-full bg-gray-700 border boder-gray-200 rounded py-3 px-4 leading-light focus:outline-none focus:bg-white focus:border-gray-500">{!! old('description')!!}</textarea>
-                    </div>
-                    <div class="w-full px-3 mb-6">
-                        <label for="" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Price :</label>
-                        <input type="number" value="{{ old('price') }}" name="price" placeholder="Product Price" class="block w-full bg-gray-700 border boder-gray-200 rounded py-3 px-4 leading-light focus:outline-none focus:bg-white focus:border-gray-500">
-                    </div>
-                    <div class="w-full px-3 mb-6">
-                        <button type='submit' class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow-lg">
-                            Save Product
-                        </button>  
-                    </div>
+                        <label for="" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Upload Photos :</label>
+                        <input type="file" multiple name="files[]" accept="image/*" placeholder="Photos" class="block w-full bg-gray-700 border boder-gray-200 rounded py-3 px-4 leading-light focus:outline-none focus:bg-white focus:border-gray-500">
+                    </div>                
+                </div>
+                <div class="w-full px-3 mb-6">
+                    <button type='submit' class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow-lg">
+                        Save Gallery    
+                    </button>  
                 </div>
             </form>
             
