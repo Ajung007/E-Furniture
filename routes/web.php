@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductGalleryController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,13 +33,10 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified',])
     Route::middleware(['admin'])->group(function ()
     {
         Route::resource('product', ProductController::class);
+        Route::resource('product.gallery', ProductGalleryController::class)->shallow()->only([
+            'index','create','store','destroy'
+        ]);
     });
 
 });
 
-
-// Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified',])->group(function () {
-//     Route::get('/dashboard', function () {
-//         return view('dashboard');
-//     })->name('dashboard');
-// });

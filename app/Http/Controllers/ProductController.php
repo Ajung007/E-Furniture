@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
@@ -18,10 +20,18 @@ class ProductController extends Controller
             $query = Product::query();
 
             return DataTables::of($query)
+            ->addColumn('action', function($item)
+            {
+                return '
+                <a href="'. route('dashboard.product.edit', $item->id) .'">
+                    Edit
+                </a>';
+            })
             ->editColumn('price', function($item)
             {
                 return number_format($item->price);
             })
+            ->rawColumns(['action'])
             ->make();
         }
 
@@ -39,9 +49,15 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+
+    public function store(ProductRequest $request)
     {
-        //
+        $data = $request->all();
+        $data['slug'] = Str::slug($request->name);
+
+        Product::create($data);
+
+        return redirect()->route('dashboard.product.index');
     }
 
     /**
@@ -55,17 +71,22 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Product $product)
     {
-        //
+        return view('pages.dashboard.product.edit', compact('product'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ProductRequest $request, Product $product)
     {
-        //
+        $data = $request->all();
+        $data['slug'] = Str::slug($request->name);
+
+        $product->update($data);
+
+        return redirect()->route('dashboard.product.index');
     }
 
     /**
