@@ -21,16 +21,14 @@ class ProductGalleryController extends Controller
             $query = ProductGallery::query();
 
             return DataTables::of($query)
-            ->addColumn('action', function($item)
-            {
+            ->addColumn('action', function ($item) {
                 return '
-                <form class="inline-block" action="'. route('dashboard.gallery.destroy', $item->id) .'">
-                    <button class="bg-red-500 text-white rounded-md px-2 py-1 m-2">
+                    <form class="inline-block" action="' . route('dashboard.gallery.destroy', $item->id) . '" method="POST">
+                    <button class="border border-red-500 bg-red-500 text-white rounded-md px-2 py-1 m-2 transition duration-500 ease select-none hover:bg-red-600 focus:outline-none focus:shadow-outline" >
                         Hapus
                     </button>
-                '. method_field('delete') . csrf_field() .'
-                </form>
-                ';
+                        ' . method_field('delete') . csrf_field() . '
+                    </form>';
             })
             ->editColumn('url', function($item)
             {
@@ -104,8 +102,10 @@ class ProductGalleryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(ProductGallery $gallery)
     {
-        //
+        $gallery->delete();
+
+        return redirect()->route('dashboard.product.gallery.index', $gallery->products_id);
     }
 }
