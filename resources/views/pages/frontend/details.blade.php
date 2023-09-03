@@ -23,77 +23,33 @@
       <section class="container mx-auto">
         <div class="flex flex-wrap my-4 md:my-12">
           <div class="w-full md:hidden px-4">
-            <h2 class="text-5xl font-semibold">Chair Thatty</h2>
-            <span class="text-xl">IDR 12.000.000</span>
+            <h2 class="text-5xl font-semibold">{{ $items->name }}</h2>
+            <span class="text-xl">{{ number_format($items->price) }}</span>
           </div>
           <div class="flex-1">
             <div class="slider">
               <div class="thumbnail">
+
+                @foreach ($items->galleries as $item )
                 <div class="px-2">
                   <div
-                    class="item selected"
-                    data-img="/frontend/images/images/content/showcase-1.front.jpg"
+                    class="item {{ $loop->first ? 'selected' : '' }}"
+                    data-img="{{ Storage::url($item->url) }}"
                   >
                     <img
-                      src="/frontend/images/content/showcase-1.front.jpg"
+                      src="{{ Storage::url($item->url) }}"
                       alt="front"
                       class="object-cover w-full h-full rounded-lg"
                     />
                   </div>
-                </div>
-                <div class="px-2">
-                  <div
-                    class="item"
-                    data-img="/frontend/images/content/showcase-1.back.jpg"
-                  >
-                    <img
-                      src="/frontend/images/content/showcase-1.back.jpg"
-                      alt="back"
-                      class="object-cover w-full h-full rounded-lg"
-                    />
-                  </div>
-                </div>
-                <div class="px-2">
-                  <div
-                    class="item"
-                    data-img="/frontend/images/content/showcase-1.rear.jpg"
-                  >
-                    <img
-                      src="/frontend/images/content/showcase-1.rear.jpg"
-                      alt="rear"
-                      class="object-cover w-full h-full rounded-lg"
-                    />
-                  </div>
-                </div>
-                <div class="px-2">
-                  <div
-                    class="item"
-                    data-img="/frontend/images/content/showcase-1.side.jpg"
-                  >
-                    <img
-                      src="/frontend/images/content/showcase-1.side.jpg"
-                      alt="side"
-                      class="object-cover w-full h-full rounded-lg"
-                    />
-                  </div>
-                </div>
-                <div class="px-2">
-                  <div
-                    class="item"
-                    data-img="/frontend/images/content/showcase-1.top.jpg"
-                  >
-                    <img
-                      src="/frontend/images/content/showcase-1.top.jpg"
-                      alt="top"
-                      class="object-cover w-full h-full rounded-lg"
-                    />
-                  </div>
-                </div>
+                </div>  
+                @endforeach
+              
               </div>
               <div class="preview">
                 <div class="item rounded-lg h-full overflow-hidden">
                   <img
-                    src="/frontend/images/content/showcase-1.front.jpg"
+                    src="{{ $items->galleries()->exists() ? Storage::url($items->galleries->first()->url) : 'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==' }}"
                     alt="front"
                     class="object-cover w-full h-full rounded-lg"
                   />
@@ -102,8 +58,8 @@
             </div>
           </div>
           <div class="flex-1 px-4 md:p-6">
-            <h2 class="text-5xl font-semibold">Chair Thatty</h2>
-            <p class="text-xl">IDR 12.000.000</p>
+            <h2 class="text-5xl font-semibold">{{ $items->name }}</h2>
+            <p class="text-xl">{{ number_format($items->price) }}</p>
   
             <a
               href="cart.html"
@@ -136,15 +92,9 @@
   
             <h6 class="text-xl font-semibold mb-4">About the product</h6>
             <p class="text-xl leading-7 mb-6">
-              Tailored to a level of perfection synonymous with that of a Savile
-              Row suit and with understated quality in the detail, Jetty has been
-              influenced by timeless 1950s style.
+             {!! $items->description !!}
             </p>
-            <p class="text-xl leading-7">
-              Providing a subtle nod to the past, Jetty also provides a perfect
-              solution for the way we work today. A comprehensive product family,
-              Jetty features a variety of elegant chairs and sofas.
-            </p>
+   
           </div>
         </div>
       </section>
