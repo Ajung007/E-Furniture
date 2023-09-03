@@ -22,21 +22,22 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [FrontendController::class, 'index'])->name('index');
 Route::get('/details/{slug}', [FrontendController::class, 'details'])->name('details');
-Route::get('/cart', [FrontendController::class, 'cart'])->name('cart');
-Route::get('/checkout/success', [FrontendController::class, 'success'])->name('checkout.succes');
 
 
-Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified',])->name('dashboard.')->prefix('dashboard')->group(function (){
-Route::get('/', [DashboardController::class,'index'])->name('index');
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('/cart', [FrontendController::class, 'cart'])->name('cart');
+    Route::post('/cart/{id}', [FrontendController::class, 'cartAdd'])->name('cart.add');
+    Route::get('/checkout/success', [FrontendController::class, 'success'])->name('checkout.succes');
+});
 
-   
-Route::middleware(['admin'])->group(function ()
-    {    
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])->name('dashboard.')->prefix('dashboard')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('index');
+
+    Route::middleware(['admin'])->group(function () {
         Route::resource('product', ProductController::class);
-        Route::resource('product.gallery', ProductGalleryController::class)->shallow()->only(['index','create','store','destroy']);
-        Route::resource('transaction', TransactionController::class)->only('index','show','edit','update');
-        Route::resource('user', UserController::class)->only('index','edit','update','destroy');
+        Route::resource('product.gallery', ProductGalleryController::class)->shallow()->only(['index', 'create', 'store', 'destroy']);
+        Route::resource('transaction', TransactionController::class)->only('index', 'show', 'edit', 'update');
+        Route::resource('user', UserController::class)->only('index', 'edit', 'update', 'destroy');
     });
 
 });
-
