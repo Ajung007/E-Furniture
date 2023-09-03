@@ -106,9 +106,11 @@
           @endforelse
 
         </div>
+
         <div class="w-full md:px-4 md:w-4/12" id="shipping-detail">
           <div class="bg-gray-100 px-4 py-6 md:p-8 md:rounded-3xl">
-            <form action="success.html">
+            <form action="{{ route('checkout') }}" method="POST">
+              @csrf
               <div class="flex flex-start mb-6">
                 <h3 class="text-2xl">Shipping Details</h3>
               </div>
@@ -120,6 +122,7 @@
                 <input
                   data-input
                   type="text"
+                  name="name"
                   id="complete-name"
                   class="border-gray-200 border rounded-lg px-4 py-2 bg-white text-sm focus:border-blue-200 focus:outline-none"
                   placeholder="Input your name"
@@ -131,6 +134,7 @@
                 <input
                   data-input
                   type="email"
+                  name="email"
                   id="email"
                   class="border-gray-200 border rounded-lg px-4 py-2 bg-white text-sm focus:border-blue-200 focus:outline-none"
                   placeholder="Input your email address"
@@ -142,6 +146,7 @@
                 <input
                   data-input
                   type="text"
+                  name="address"
                   id="address"
                   class="border-gray-200 border rounded-lg px-4 py-2 bg-white text-sm focus:border-blue-200 focus:outline-none"
                   placeholder="Input your address"
@@ -155,6 +160,7 @@
                 <input
                   data-input
                   type="tel"
+                  name="phone"
                   id="phone-number"
                   class="border-gray-200 border rounded-lg px-4 py-2 bg-white text-sm focus:border-blue-200 focus:outline-none"
                   placeholder="Input your phone number"
