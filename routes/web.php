@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\MyTransactionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductGalleryController;
 use App\Http\Controllers\TestController;
@@ -30,10 +31,17 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::delete('/cart/{id}', [FrontendController::class, 'cartDelete'])->name('cart.delete');
     Route::post('/checkout', [FrontendController::class, 'checkout'])->name('checkout');
     Route::get('/checkout/success', [FrontendController::class, 'success'])->name('checkout.succes');
+
+
+
 });
+
+
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])->name('dashboard.')->prefix('dashboard')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('index');
+    Route::resource('my-transaction', MyTransactionController::class)->only('index', 'show');
+
 
     Route::middleware(['admin'])->group(function () {
         Route::resource('product', ProductController::class);
